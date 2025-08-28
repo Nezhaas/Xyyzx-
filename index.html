@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xyzz || Evin</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: url('samurai.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 420px;
+      animation: fadeIn 1s ease;
+    }
+
+    .logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255,255,255,0.8);
+      margin-bottom: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.4);
+    }
+
+    .owner-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 25px;
+      text-shadow: 0 0 5px rgba(0,0,0,0.6);
+    }
+
+    h2 {
+      color: white;
+      margin-bottom: 25px;
+      font-size: 22px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .methods {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .method {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 15px;
+      padding: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .method:hover {
+      transform: translateY(-5px) scale(1.05);
+      background: rgba(255, 255, 255, 0.35);
+      border-color: rgba(255,255,255,0.6);
+    }
+
+    .method img {
+      width: 60px;
+      margin-bottom: 10px;
+    }
+
+    .method span {
+      display: block;
+      font-size: 16px;
+      color: white;
+      font-weight: 500;
+    }
+
+    /* POPUP */
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .popup-content {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 320px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+      animation: pop 0.4s ease;
+    }
+
+    .popup-content h3 {
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    .popup-content p {
+      color: #eee;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .popup-content img {
+      width: 180px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+      margin-bottom: 20px;
+      display: none; /* default hidden */
+    }
+
+    .close {
+      background: linear-gradient(45deg, #ff4b2b, #ff416c);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .close:hover {
+      opacity: 0.85;
+      transform: scale(1.05);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Logo bisa diganti langsung di src -->
+    <img src="https://via.placeholder.com/120" class="logo">
+    <div class="owner-name" id="ownerName">Nama Custom</div>
+
+    <h2>Pilih Metode Pembayaran</h2>
+
+    <div class="methods">
+      <div class="method" onclick="openPopup('DANA', danaNumber)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Dana_logo.png" alt="DANA">
+        <span>DANA</span>
+      </div>
+      <div class="method" onclick="openPopup('GO-PAY', gopayNumber)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/GoPay_logo.png" alt="GO-PAY">
+        <span>GO-PAY</span>
+      </div>
+      <div class="method" onclick="openPopup('OVO', ovoNumber)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/Logo_ovo_purple.svg" alt="OVO">
+        <span>OVO</span>
+      </div>
+      <div class="method" onclick="openPopup('QRIS', '')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/QRIS_logo.png" alt="QRIS">
+        <span>QRIS</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h3 id="popupTitle"></h3>
+      <p id="popupNumber"></p>
+      <img id="popupQR" src="" alt="QR Code">
+      <br>
+      <button class="close" onclick="closePopup()">Tutup</button>
+    </div>
+  </div>
+
+<script>
+  // Nomor bisa diubah langsung di sini
+  const danaNumber = "0812-1234-5678";
+  const gopayNumber = "0857-9876-5432";
+  const ovoNumber   = "0896-1122-3344";
+
+  // Nama custom bisa diganti di sini
+  document.getElementById("ownerName").innerText = "Xyzz || Evin";
+
+  function openPopup(method, number) {
+    document.getElementById('popupTitle').innerText = "Bayar via " + method;
+    const numberEl = document.getElementById('popupNumber');
+    const qrEl = document.getElementById('popupQR');
+
+    if (method === "QRIS") {
+      numberEl.innerText = "";
+      qrEl.src = "https://via.placeholder.com/180?text=QRIS+Code";
+      qrEl.style.display = "block";
+    } else {
+      numberEl.innerText = "No: " + number;
+      qrEl.style.display = "none";
+    }
+
+    document.getElementById('popup').style.display = "flex";
+  }
+
+  function closePopup() {
+    document.getElementById('popup').style.display = "none";
+  }
+</script>
+
+</body>
+</html>
